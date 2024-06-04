@@ -51,14 +51,70 @@
             transform: scale(1.05);
         }
         .footer {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      text-align: center;
-      padding: 0.1px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            text-align: center;
+            padding: 0.1px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 60px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .modal-content {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+        .close, .prev, .next {
+            position: absolute;
+            top: 50%;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            user-select: none;
+            cursor: pointer;
+        }
+        .close {
+            top: 15px;
+            right: 35px;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .prev {
+            left: 0;
+        }
+        .next {
+            right: 0;
+        }
+        .prev:hover, .next:hover {
+            color: #bbb;
+        }
     </style>
 </head>
 <body>
@@ -96,14 +152,58 @@
             <img src="photo17.jpg" alt="Photo 17">
             <img src="photo18.jpg" alt="Photo 18">
             <img src="photo19.jpg" alt="Photo 19">
-
-
-
-
         </div>
     </div>
     <div class="footer">
         <p>&copy; 2024 JBelli | All rights reserved</p>
     </div>
+    
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <span class="prev">&#10094;</span>
+        <span class="next">&#10095;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the image and insert it inside the modal
+        var modalImg = document.getElementById("img01");
+        var images = document.querySelectorAll('.gallery img');
+        var currentIndex = 0;
+
+        images.forEach(function(img, index) {
+            img.onclick = function() {
+                modal.style.display = "block";
+                modalImg.src = this.src;
+                currentIndex = index;
+            }
+        });
+
+        // Get the <span> element that closes the modal
+        var closeBtn = document.getElementsByClassName("close")[0];
+        var prevBtn = document.getElementsByClassName("prev")[0];
+        var nextBtn = document.getElementsByClassName("next")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        closeBtn.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        // When the user clicks on previous button, show the previous image
+        prevBtn.onclick = function() {
+            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
+            modalImg.src = images[currentIndex].src;
+        }
+
+        // When the user clicks on next button, show the next image
+        nextBtn.onclick = function() {
+            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
+            modalImg.src = images[currentIndex].src;
+        }
+    </script>
 </body>
 </html>
